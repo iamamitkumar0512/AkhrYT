@@ -1,11 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SideBarSlider = () => {
   return (
-    <div className="shadow-lg p-1 m-2 w-1/12">
+    <div className="shadow-lg p-1 m-2 w-1/12 h-auto">
       <br />
       <ul>
-        <li>Home</li>
+        <Link to="/">
+          <li>Home</li>
+        </Link>
         <li>Shorts</li>
         <li>Subscriptions</li>
       </ul>

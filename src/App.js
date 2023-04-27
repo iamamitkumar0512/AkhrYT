@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Body from "./components/Body";
+import BodyMainConatiner from "./components/BodyMainConatiner";
 import Header from "./components/Header";
+import VideoPlayer from "./components/VideoPlayer";
 import SliderContex from "./utils/SliderContext";
 
 //----------------------------------------------------------------
@@ -29,10 +32,24 @@ function App() {
     <div className="App">
       <SliderContex.Provider value={{ slider, setSlider }}>
         <Header />
-        <Body />
+        <RouterProvider router={appRouter} />
       </SliderContex.Provider>
     </div>
   );
 }
+
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Body />,
+    children: [
+      { path: "/", element: <BodyMainConatiner /> },
+      {
+        path: "watch",
+        element: <VideoPlayer />,
+      },
+    ],
+  },
+]);
 
 export default App;

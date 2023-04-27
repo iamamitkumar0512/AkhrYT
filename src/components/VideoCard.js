@@ -7,7 +7,7 @@ const VideoCard = ({ thumbnail, name, views, channelTitel, time }) => {
   const pastTime = new Date(time);
   const newTime = useTime(pastTime);
   return (
-    <div className="p-2 m-2 border border-red-300 shadow-lg">
+    <div className="p-2 m-2 border border-red-300 shadow-lg h-80">
       <img className="rounded-xl " alt={name} src={thumbnail} />
       <h2 className="font-bold max-w-xs">{name}</h2>
       <h5>{channelTitel}</h5>

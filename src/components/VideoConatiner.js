@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { yt_api } from "../utils/constant";
 import VideoCard from "./VideoCard";
 
@@ -16,7 +17,6 @@ const VideoConatiner = () => {
       const responce = await fetch(yt_api);
       const data = await responce.json();
       setVideoData(data.items);
-      // console.log(videoData);
     } catch (error) {
       console.error(error);
     }
@@ -26,14 +26,16 @@ const VideoConatiner = () => {
       {videoData.length &&
         videoData.map((i) => {
           return (
-            <VideoCard
-              key={i?.id}
-              name={i?.snippet?.title}
-              thumbnail={i?.snippet.thumbnails?.medium?.url}
-              channelTitel={i?.snippet?.channelTitle}
-              views={i?.statistics?.viewCount}
-              time={i?.snippet?.publishedAt}
-            />
+            <Link to={"/watch?v=" + i.id} state={i}>
+              <VideoCard
+                key={i?.id}
+                name={i?.snippet?.title}
+                thumbnail={i?.snippet.thumbnails?.medium?.url}
+                channelTitel={i?.snippet?.channelTitle}
+                views={i?.statistics?.viewCount}
+                time={i?.snippet?.publishedAt}
+              />
+            </Link>
           );
         })}
     </div>
