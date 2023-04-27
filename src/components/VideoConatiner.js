@@ -26,7 +26,7 @@ const VideoConatiner = () => {
       {videoData.length &&
         videoData.map((i) => {
           return (
-            <Link to={"/watch?v=" + i.id} state={i}>
+            <Link to={"/watch?v=" + i.id} state={i} key={i.id}>
               <VideoCard
                 key={i?.id}
                 name={i?.snippet?.title}
