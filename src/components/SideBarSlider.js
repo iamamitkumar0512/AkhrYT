@@ -1,42 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import MenuItems from "./MenuItems";
+
+import {
+  HomeIcon,
+  MusicalNoteIcon,
+  LifebuoyIcon,
+  PlayCircleIcon,
+  PlayIcon,
+  BuildingLibraryIcon,
+  ClockIcon,
+  VideoCameraIcon,
+  ChartPieIcon,
+  ArrowDownTrayIcon,
+  HandThumbUpIcon,
+  FireIcon,
+  ShoppingBagIcon,
+  NewspaperIcon,
+} from "@heroicons/react/24/outline";
 
 const SideBarSlider = () => {
   return (
-    <div className="shadow-lg p-1 m-2 w-1/12 h-auto">
-      <br />
-      <ul>
-        <Link to="/">
-          <li>Home</li>
-        </Link>
-        <li>Shorts</li>
-        <li>Subscriptions</li>
-      </ul>
-      <br />
-      <hr />
-      <br />
-      <ul>
-        <li>Library</li>
-        <li>History</li>
-        <li>Watch Later</li>
-        <li>Liked Video</li>
-      </ul>
-      <br />
-      <hr />
-      <br></br>
-      <h4 className="font-bold">Explore</h4>
-      <br />
-      <ul>
-        <li>Trending</li>
-        <li>Shopping</li>
-        <li>Music</li>
-        <li>Live</li>
-        <li>Gaming</li>
-        <li>Sports</li>
-        <li>Fashion</li>
-        <li>Beauty</li>
-        <li>Learning</li>
-      </ul>
+    <div>
+      <Link to={"/"}>
+        <MenuItems Icon={HomeIcon} item={"Home"} />
+      </Link>
+      <MenuItems Icon={MusicalNoteIcon} item={"Shorts"} />
+      <MenuItems Icon={LifebuoyIcon} item={"Subscriptions"} />
+      <MenuItems Icon={PlayIcon} item={"Originals"} />
+      <MenuItems Icon={PlayCircleIcon} item={"YouTube Music"} />
+      <hr className="border border-spacing-2 bg-black ml-3"></hr>
+      <MenuItems Icon={BuildingLibraryIcon} item={"Library"} />
+      <MenuItems Icon={ChartPieIcon} item={"History"} />
+      <MenuItems Icon={VideoCameraIcon} item={"Your videos"} />
+      <MenuItems Icon={ClockIcon} item={"Watch Later"} />
+      <MenuItems Icon={ArrowDownTrayIcon} item={"Downloads"} />
+      <MenuItems Icon={HandThumbUpIcon} item={"Liked videos"} />
+      <hr className="border border-spacing-2 bg-black ml-3"></hr>
+      <h2 className="font-bold text-xl ml-3">Explore</h2>
+      <MenuItems Icon={FireIcon} item={"Trending"} />
+      <MenuItems Icon={ShoppingBagIcon} item={"Shopping"} />
+      <MenuItems Icon={MusicalNoteIcon} item={"Music"} />
+      <MenuItems Icon={NewspaperIcon} item={"News"} />
     </div>
   );
 };

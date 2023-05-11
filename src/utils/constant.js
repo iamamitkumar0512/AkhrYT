@@ -3,6 +3,9 @@ export const yt_api =
   "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&maxResults=50&key=" +
   API_KEY;
 
+export const yt_suggest_api =
+  "https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&client=chrome&q=";
+
 export const yt_api1 =
   "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&maxResults=10&key=" +
   API_KEY;

@@ -7,10 +7,14 @@ const VideoCard = ({ thumbnail, name, views, channelTitel, time }) => {
   const pastTime = new Date(time);
   const newTime = useTime(pastTime);
   return (
-    <div className="p-2 m-2 border border-red-300 shadow-lg h-80">
-      <img className="rounded-xl " alt={name} src={thumbnail} />
-      <h2 className="font-bold max-w-xs">{name}</h2>
-      <h5>{channelTitel}</h5>
+    <div className="m-2 w-72 mb-2 rounded-lg">
+      <img
+        alt={name}
+        src={thumbnail}
+        className="rounded-lg mb-2 hover:scale-110"
+      ></img>
+      <p className="text-black font-semibold">{name}</p>
+      <p className="font-normal text-gray-600">{channelTitel}</p>
       <p>{view + " || " + newTime}</p>
     </div>
   );

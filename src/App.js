@@ -5,6 +5,7 @@ import BodyMainConatiner from "./components/BodyMainConatiner";
 import Header from "./components/Header";
 import VideoPlayer from "./components/VideoPlayer";
 import SliderContex from "./utils/SliderContext";
+import SearchPage from "./components/SearchPage";
 
 //----------------------------------------------------------------
 
@@ -47,6 +48,10 @@ const appRouter = createBrowserRouter([
       {
         path: "watch",
         element: <VideoPlayer />,
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
       },
     ],
   },
