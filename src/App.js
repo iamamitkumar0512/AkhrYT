@@ -2,10 +2,14 @@ import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Body from "./components/Body";
 import BodyMainConatiner from "./components/BodyMainConatiner";
-import Header from "./components/Header";
 import VideoPlayer from "./components/VideoPlayer";
 import SliderContex from "./utils/SliderContext";
 import SearchPage from "./components/SearchPage";
+import { Provider } from "react-redux";
+import store from "./utils/store.js";
+import HistoryPage from "./components/HistoryPage";
+import SubscriptionPage from "./components/SubscriptionPage";
+import LikeVideoPage from "./components/LikeVideoPage";
 
 //----------------------------------------------------------------
 
@@ -30,12 +34,13 @@ import SearchPage from "./components/SearchPage";
 function App() {
   const [slider, setSlider] = useState(false);
   return (
-    <div className="App">
-      <SliderContex.Provider value={{ slider, setSlider }}>
-        <Header />
-        <RouterProvider router={appRouter} />
-      </SliderContex.Provider>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <SliderContex.Provider value={{ slider, setSlider }}>
+          <RouterProvider router={appRouter} />
+        </SliderContex.Provider>
+      </div>
+    </Provider>
   );
 }
 
@@ -52,6 +57,18 @@ const appRouter = createBrowserRouter([
       {
         path: "search",
         element: <SearchPage />,
+      },
+      {
+        path: "history",
+        element: <HistoryPage />,
+      },
+      {
+        path: "subscriptions",
+        element: <SubscriptionPage />,
+      },
+      {
+        path: "likeVideo",
+        element: <LikeVideoPage />,
       },
     ],
   },

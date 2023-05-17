@@ -9,3 +9,11 @@ export const yt_suggest_api =
 export const yt_api1 =
   "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=IN&maxResults=10&key=" +
   API_KEY;
+
+export const yt_search_api =
+  "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=15&type=video&key=AIzaSyCUtHkJVJC7N4H6bMmG82Y3CF_fRRmTK4k&q=";
+
+export const yt_channel_api =
+  "https://www.googleapis.com/youtube/v3/channels?part=snippet&id=";
+export const yt_channel_api2 = "&key=AIzaSyCUtHkJVJC7N4H6bMmG82Y3CF_fRRmTK4k";
+// https://www.googleapis.com/youtube/v3/channels?part=snippet&id=&key=AIzaSyCUtHkJVJC7N4H6bMmG82Y3CF_fRRmTK4k

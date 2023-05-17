@@ -8,7 +8,7 @@ const RecommedVideoCard = ({ thumbnail, name, views, channelTitel, time }) => {
   const newTime = useTime(pastTime);
   return (
     <div className="p-2 m-2 flex flex-row">
-      <img className="rounded-xl m-2 h-60" alt={name} src={thumbnail} />
+      <img className="rounded-lg m-2" alt={name} src={thumbnail} />
       <div className="flex flex-col">
         <p className="text-black font-semibold m-1">{name}</p>
         <h5 className="m-1">{channelTitel}</h5>
