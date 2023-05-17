@@ -20,9 +20,11 @@ const historySlice = createSlice({
       }
       state.videoHistory = data;
       state.videoHistory.unshift(action.payload);
+      localStorage.setItem("history", JSON.stringify(state.videoHistory));
     },
     clearHistory: (state) => {
       state.videoHistory = [];
+      localStorage.setItem("history", JSON.stringify(state.videoHistory));
     },
     updateHistory: (state, action) => {
       let data = JSON.parse(JSON.stringify(state.videoHistory));
@@ -32,9 +34,15 @@ const historySlice = createSlice({
       }
       state.videoHistory = data;
       state.videoHistory.unshift(action.payload);
+      localStorage.setItem("history", JSON.stringify(state.videoHistory));
+    },
+    updateHistoryRefresh: (state) => {
+      const dataItems = JSON.parse(localStorage.getItem("history"));
+      state.videoHistory = dataItems || [];
     },
   },
 });
 
-export const { addVideo, clearHistory, updateHistory } = historySlice.actions;
+export const { addVideo, clearHistory, updateHistory, updateHistoryRefresh } =
+  historySlice.actions;
 export default historySlice.reducer;

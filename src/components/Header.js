@@ -5,7 +5,14 @@ import { useRef } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { cacheResult, searchHistoryResult } from "../utils/searchSlice";
+import {
+  cacheResult,
+  searchHistoryResult,
+  updateSearchRefresh,
+} from "../utils/searchSlice";
+import { updateHistoryRefresh } from "../utils/historySlice";
+import { updateLikeArrayRefresh } from "../utils/likeSlice";
+import { updateSubscribeRefresh } from "../utils/subscriptionSlice";
 
 const Header = () => {
   const { slider, setSlider } = useContext(SliderContex);
@@ -26,6 +33,16 @@ const Header = () => {
     }
   };
 
+  const localStorageRefresh = () => {
+    dispatch(updateHistoryRefresh());
+    dispatch(updateLikeArrayRefresh());
+    dispatch(updateSearchRefresh());
+    dispatch(updateSubscribeRefresh());
+  };
+  useEffect(() => {
+    localStorageRefresh();
+  }, []);
+
   useEffect(() => {
     let suggestionHandler = (e) => {
       if (suggestionRef.current.contains(e.target)) {
@@ -41,12 +58,10 @@ const Header = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!searchQuery) {
-        // console.log(searchHistory);
         setSuggestions(searchHistory);
       } else if (searchCache[searchQuery]) {
         setSuggestions(searchCache[searchQuery]);
       } else {
-        // console.log("inside else");
         getSearchSuggestions();
       }
     }, 300);

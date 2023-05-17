@@ -13,11 +13,7 @@ const LikeVideoPage = () => {
       {likeVideoData.length ? (
         likeVideoData?.map((video) => {
           return (
-            <Link
-              key={video.id.videoId}
-              to={`/watch?v=${video.id}`}
-              state={video}
-            >
+            <Link key={video.id} to={`/watch?v=${video.id}`} state={video}>
               <HistoryVideoCard videoInfo={video} />{" "}
             </Link>
           );

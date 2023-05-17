@@ -13,10 +13,16 @@ const searchSlice = createSlice({
     searchHistoryResult: (state, action) => {
       state.searchHistoryState.splice(10, 1);
       state.searchHistoryState.unshift(action.payload);
+      localStorage.setItem("search", JSON.stringify(state.searchHistoryState));
+    },
+    updateSearchRefresh: (state) => {
+      const dataItems = JSON.parse(localStorage.getItem("search"));
+      state.searchHistoryState = dataItems || [];
     },
   },
 });
 
-export const { cacheResult, searchHistoryResult } = searchSlice.actions;
+export const { cacheResult, searchHistoryResult, updateSearchRefresh } =
+  searchSlice.actions;
 
 export default searchSlice.reducer;

@@ -4,11 +4,11 @@ const likeSlice = createSlice({
   name: "like",
   initialState: {
     likeArray: [],
-    // likedID: null,
   },
   reducers: {
     liked: (state, action) => {
       state.likeArray.push(action.payload);
+      localStorage.setItem("like", JSON.stringify(state.likeArray));
     },
     dislike: (state, action) => {
       let data = JSON.parse(JSON.stringify(state.likeArray));
@@ -17,20 +17,14 @@ const likeSlice = createSlice({
         data = data.filter((item) => item.id !== id);
       }
       state.likeArray = data;
+      localStorage.setItem("like", JSON.stringify(state.likeArray));
     },
-    // serachLikedVideo: (state, action) => {
-    //   let data = JSON.parse(JSON.stringify(state.likeArray));
-    //   let id = action.payload;
-    //   let resultId = null;
-    //   for (let i = 0; i < data.length; i++) {
-    //     if (data[i].id === id) {
-    //       resultId = id;
-    //     }
-    //   }
-    //   state.likedID = resultId;
-    // },
+    updateLikeArrayRefresh: (state) => {
+      const dataItems = JSON.parse(localStorage.getItem("like"));
+      state.likeArray = dataItems || [];
+    },
   },
 });
 
-export const { liked, dislike } = likeSlice.actions;
+export const { liked, dislike, updateLikeArrayRefresh } = likeSlice.actions;
 export default likeSlice.reducer;

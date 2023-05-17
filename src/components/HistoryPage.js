@@ -6,7 +6,6 @@ import { clearHistory, updateHistory } from "../utils/historySlice";
 
 const HistoryPage = () => {
   const historyData = useSelector((store) => store.history.videoHistory);
-  // console.log(historyData);
   const dispatch = useDispatch();
   return (
     <div className="m-2 p-2 ml-14">

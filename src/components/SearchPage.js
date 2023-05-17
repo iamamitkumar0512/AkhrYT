@@ -25,7 +25,6 @@ const SearchPage = () => {
   return (
     <div className="m-2 p-2 ml-14">
       {searchVideos?.map((video) => {
-        // console.log(video);
         return (
           <Link
             key={video.id.videoId}

@@ -10,10 +10,7 @@ import { addVideo } from "../utils/historySlice";
 import { unSubscribe, addSubscribe } from "../utils/subscriptionSlice";
 import { dislike, liked } from "../utils/likeSlice";
 import useViews from "../utils/useViews";
-import {
-  HandThumbUpIcon,
-  HandThumbDownIcon,
-} from "@heroicons/react/24/outline";
+import { HandThumbUpIcon } from "@heroicons/react/24/outline";
 
 const VideoPlayer = () => {
   let [searchParams] = useSearchParams();
@@ -79,7 +76,6 @@ const VideoPlayer = () => {
   let likeCount = useViews(state?.statistics?.likeCount);
   let increaseCount = parseInt(state?.statistics?.likeCount) + 1;
   let increaseLikebyone = useViews(increaseCount);
-  console.log(state?.statistics?.likeCount, increaseCount);
 
   return (
     <div className="flex flex-row justify-between">
@@ -157,7 +153,9 @@ const VideoPlayer = () => {
         </div>
         <div className="max-w-xl bg-gray-200 rounded">
           <div className="flex flex-row justify-between p-2  mt-3">
-            <h2 className="font-bold py-2 px-4">Comments</h2>
+            <h2 className="font-bold py-2 px-4">
+              {commentData.length} Comments
+            </h2>
             {show ? (
               <button
                 className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
