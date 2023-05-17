@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addVideo } from "../utils/historySlice";
 import { unSubscribe, addSubscribe } from "../utils/subscriptionSlice";
 import { dislike, liked } from "../utils/likeSlice";
-
+import useViews from "../utils/useViews";
 import {
   HandThumbUpIcon,
   HandThumbDownIcon,
@@ -76,6 +76,11 @@ const VideoPlayer = () => {
     setShow(false);
   }, [id]);
 
+  let likeCount = useViews(state?.statistics?.likeCount);
+  let increaseCount = parseInt(state?.statistics?.likeCount) + 1;
+  let increaseLikebyone = useViews(increaseCount);
+  console.log(state?.statistics?.likeCount, increaseCount);
+
   return (
     <div className="flex flex-row justify-between">
       <div className="m-12">
@@ -90,39 +95,42 @@ const VideoPlayer = () => {
         <br></br>
         <div className="flex flex-row justify-between">
           <h2 className="font-bold">{state?.snippet?.channelTitle}</h2>
-          {subscribeArray.includes(state?.snippet?.channelId) ? (
-            <button
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
-              onClick={() => dispatch(unSubscribe(state?.snippet?.channelId))}
-            >
-              Subscribed
-            </button>
-          ) : (
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full"
-              onClick={() => dispatch(addSubscribe(state?.snippet?.channelId))}
-            >
-              Subscribe
-            </button>
-          )}
-          {checkLikeVideo(state?.id, likeArray) ? (
-            <button
-              className="flex bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
-              onClick={() => dispatch(dislike(state))}
-            >
-              <HandThumbDownIcon className="h-5 w-5" />
-              Dislike
-            </button>
-          ) : (
-            <button
-              className=" flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full"
-              onClick={() => dispatch(liked(state))}
-            >
-              <HandThumbUpIcon className="h-5 w-5" />
-              Like
-            </button>
-          )}
-          <h2>💖 {state?.statistics?.likeCount}</h2>
+          <div className="flex">
+            {subscribeArray.includes(state?.snippet?.channelId) ? (
+              <button
+                className="mr-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
+                onClick={() => dispatch(unSubscribe(state?.snippet?.channelId))}
+              >
+                Subscribed
+              </button>
+            ) : (
+              <button
+                className="mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full"
+                onClick={() =>
+                  dispatch(addSubscribe(state?.snippet?.channelId))
+                }
+              >
+                Subscribe
+              </button>
+            )}
+            {checkLikeVideo(state?.id, likeArray) ? (
+              <button
+                className="flex bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
+                onClick={() => dispatch(dislike(state))}
+              >
+                <HandThumbUpIcon className="h-6 w-6" />
+                <p className="px-1">{increaseLikebyone}</p>
+              </button>
+            ) : (
+              <button
+                className=" flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full"
+                onClick={() => dispatch(liked(state))}
+              >
+                <HandThumbUpIcon className="h-6 w-6" />
+                <p className="px-1">{likeCount}</p>
+              </button>
+            )}
+          </div>
         </div>
         <div className="max-w-xl rounded-lg bg-gray-800 p-2 mt-3">
           <p>
