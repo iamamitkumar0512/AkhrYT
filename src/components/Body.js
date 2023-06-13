@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import SliderContex from "../utils/SliderContext";
 import Header from "./Header";
 import SideBarSlider from "./SideBarSlider";
-import { commentData } from "../utils/commentData";
+import Prompt from "./Prompt";
 
 const Body = () => {
   const { slider } = useContext(SliderContex);
@@ -11,6 +11,7 @@ const Body = () => {
   return (
     <>
       <Header />
+      <Prompt />
       <div className="flex">
         {slider && <SideBarSlider />}
         <Outlet />
