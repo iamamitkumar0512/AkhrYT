@@ -57,7 +57,7 @@ const VideoPlayer = () => {
   }
 
   const checkLikeVideo = function (id, likeArray) {
-    for (let i = 0; i < likeArray.length; i++) {
+    for (let i = 0; i < likeArray?.length; i++) {
       if (likeArray[i].id === id) {
         return true;
       }
@@ -154,7 +154,7 @@ const VideoPlayer = () => {
         <div className="max-w-xl bg-gray-200 rounded">
           <div className="flex flex-row justify-between p-2  mt-3">
             <h2 className="font-bold py-2 px-4">
-              {commentData.length} Comments
+              {commentData?.length} Comments
             </h2>
             {show ? (
               <button

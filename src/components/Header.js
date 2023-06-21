@@ -13,12 +13,15 @@ import {
 import { updateHistoryRefresh } from "../utils/historySlice";
 import { updateLikeArrayRefresh } from "../utils/likeSlice";
 import { updateSubscribeRefresh } from "../utils/subscriptionSlice";
+import SignupModal from "./SignupModal";
+import SignInModal from "./SignInModal";
 
 const Header = () => {
   const { slider, setSlider } = useContext(SliderContex);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestion] = useState(true);
+  const [showSignupModal, setShowSignupModal] = useState(false);
   const suggestionRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -180,11 +183,13 @@ const Header = () => {
 
       <div className="col-span-1">
         <img
+          onClick={() => setShowSignupModal(true)}
           className="h-10 m-2"
           alt="user"
           src="data:image/png;base64,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"
         />
       </div>
+      {showSignupModal ? <SignupModal /> : ""}
     </div>
   );
 };

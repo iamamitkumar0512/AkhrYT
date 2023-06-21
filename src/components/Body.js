@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
 import SliderContex from "../utils/SliderContext";
-import Header from "./Header";
 import SideBarSlider from "./SideBarSlider";
+import Header from "./Header";
 import Prompt from "./Prompt";
 
 const Body = () => {
