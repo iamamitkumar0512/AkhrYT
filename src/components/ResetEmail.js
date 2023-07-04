@@ -1,56 +1,56 @@
 import React from "react";
-import styles from "../styles/Username.module.css";
-import { Link } from "react-router-dom";
 import avatar from "../assests/profile.png";
+import styles from "../styles/Username.module.css";
 import { useSelector } from "react-redux";
-import store from "../utils/store";
+import { useDispatch } from "react-redux";
 import {
   setCloseBtn,
   setRegisterModalState,
-  setResetEmailState,
+  setLoginModalState,
+  setResetOtpState,
 } from "../utils/modalStateSlice";
-import { useDispatch } from "react-redux";
 import { toast, Toaster } from "react-hot-toast";
-import { useFormik } from "formik";
-import { signInValidation } from "../utils/validate";
 import { requestAPI } from "../utils/connectionApi";
-import { setUserData, setIsLoggedIn } from "../utils/loginDataSlice";
+import { useFormik } from "formik";
+import { resetEmailValidation } from "../utils/validate";
 
-const SignInModal = () => {
-  const signInModalState = useSelector(
-    (store) => store.modalState.loginModalState
+const ResetEmail = () => {
+  const resetEmailModalState = useSelector(
+    (store) => store.modalState.resetEmailState
   );
+
   const dispatch = useDispatch();
+
   const closeBtnHandler = () => {
     dispatch(setCloseBtn());
   };
+
   const registerHandler = () => {
     dispatch(setRegisterModalState());
   };
-  const resetEmailHandler = () => {
-    dispatch(setResetEmailState());
+
+  const loginHandler = () => {
+    dispatch(setLoginModalState());
   };
 
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
     },
-    validate: signInValidation,
+    validate: resetEmailValidation,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      requestAPI("POST", "/login", values, null)
+      requestAPI("POST", "/resetPassword", values, null)
         .then((res) => {
-          localStorage.setItem("authToken", res.data.token);
+          localStorage.setItem("resetEmail", values.email);
+          localStorage.setItem("otpToken", res.data.token);
           if (res.status === 200) {
             setTimeout(() => {
-              dispatch(setUserData(res.data));
-              dispatch(setIsLoggedIn());
-              closeBtnHandler();
+              dispatch(setResetOtpState());
             }, 500);
           }
-          toast.success("Login sucessfully ");
+          toast.success(res.data.message);
         })
         .catch((err) => {
           toast.error(err.response.data.message);
@@ -58,7 +58,7 @@ const SignInModal = () => {
     },
   });
 
-  return signInModalState ? (
+  return resetEmailModalState ? (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="container mx-auto">
@@ -69,7 +69,7 @@ const SignInModal = () => {
               style={{ width: "45%", paddingTop: "1em" }}
             >
               <div className="title flex flex-row justify-between items-center">
-                <h4 className="text-2xl font-bold item-center">Login</h4>
+                <h4 className="text-2xl font-bold item-center">Reset</h4>
                 <button
                   className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-2 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
@@ -85,6 +85,11 @@ const SignInModal = () => {
                   alt="avatar"
                 />
               </div>
+              <div className="text-center py-4">
+                <span className="text-gray-500">
+                  Please enter your registered Email
+                </span>
+              </div>
 
               <form className="py-1" onSubmit={formik.handleSubmit}>
                 <div className="textbox flex flex-col items-center gap-6">
@@ -95,31 +100,25 @@ const SignInModal = () => {
                     placeholder="Email*"
                   />
 
-                  <input
-                    {...formik.getFieldProps("password")}
-                    className={styles.lgtextbox}
-                    type="text"
-                    placeholder="Password*"
-                  />
                   <button className={styles.btn} type="submit">
-                    Login
+                    Send Otp
                   </button>
                 </div>
               </form>
-              <div className="text-center py-2">
+              <div className="text-center py-3">
                 <span className="text-gray-500">
-                  Forget Password?{" "}
-                  <Link className="text-red-500" onClick={resetEmailHandler}>
-                    Reset Password
-                  </Link>
+                  Already Registered?{" "}
+                  <span className="text-red-500" onClick={loginHandler}>
+                    Login
+                  </span>
                 </span>
               </div>
               <div className="text-center py-1">
                 <span className="text-gray-500">
                   New User?{" "}
-                  <Link className="text-red-500" onClick={registerHandler}>
+                  <span className="text-red-500" onClick={registerHandler}>
                     Register
-                  </Link>
+                  </span>
                 </span>
               </div>
             </div>
@@ -130,4 +129,4 @@ const SignInModal = () => {
   ) : null;
 };
 
-export default SignInModal;
+export default ResetEmail;

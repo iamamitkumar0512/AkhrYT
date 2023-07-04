@@ -5,45 +5,46 @@ import styles from "../styles/Username.module.css";
 import { toast, Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import convertToBase64 from "../utils/convert";
-import { registerValidation } from "../utils/validate";
+import { updateProfileValidation } from "../utils/validate";
 import { requestAPI } from "../utils/connectionApi";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../utils/store";
-import { setCloseBtn, setLoginModalState } from "../utils/modalStateSlice";
+import { setCloseBtn, setProfileState } from "../utils/modalStateSlice";
+import { setUserData } from "../utils/loginDataSlice";
 
-const SignupModal = () => {
-  const [file, setFile] = useState();
+const ProfileUpdateModal = () => {
   const dispatch = useDispatch();
   const closeBtnHandler = () => {
     dispatch(setCloseBtn());
   };
 
-  const loginHandler = () => {
-    dispatch(setLoginModalState());
-  };
-  const registerModalState = useSelector(
-    (store) => store.modalState.registerModalState
+  const userData = useSelector((store) => store.loginData.userData);
+  const updateProfileModalState = useSelector(
+    (store) => store.modalState.updateProfileState
   );
+  const [file, setFile] = useState(userData?.user?.profileImg);
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      mobile: "",
-      email: "",
-      password: "",
+      firstName: userData?.user?.firstName,
+      lastName: userData?.user?.lastName,
+      mobile: userData?.user?.mobile,
     },
-    validate: registerValidation,
+    validate: updateProfileValidation,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      values = await Object.assign(values, { profileImg: file || "" });
+      values = await Object.assign(values, {
+        profileImg: file || userData?.user?.profileImg,
+      });
 
-      requestAPI("POST", "/register", values, null)
+      requestAPI("PUT", "/update/user", values, null)
         .then((res) => {
           if (res.status === 200) {
             setTimeout(() => {
-              loginHandler();
+              // console.log(res);
+              dispatch(setUserData(res.data));
+              dispatch(setProfileState());
             }, 500);
           }
           toast.success(res.data.message);
@@ -69,7 +70,7 @@ const SignupModal = () => {
     }
   };
 
-  return registerModalState ? (
+  return updateProfileModalState ? (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="container mx-auto">
@@ -80,7 +81,9 @@ const SignupModal = () => {
               style={{ width: "45%", paddingTop: "1em" }}
             >
               <div className="title flex flex-row justify-between items-center">
-                <h4 className="text-2xl font-bold item-center">Register</h4>
+                <h4 className="text-lg font-bold item-center">
+                  Update Profile
+                </h4>
                 <button
                   className="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-2 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                   type="button"
@@ -90,11 +93,11 @@ const SignupModal = () => {
                 </button>
               </div>
 
-              <form className="py-1" onSubmit={formik.handleSubmit}>
+              <form className="py-3" onSubmit={formik.handleSubmit}>
                 <div className="profile flex justify-center py-1">
                   <label htmlFor="profile">
                     <img
-                      src={file || avatar}
+                      src={file}
                       className={styles.profile_img}
                       alt="avatar"
                     />
@@ -108,54 +111,31 @@ const SignupModal = () => {
                   />
                 </div>
 
-                <div className="textbox flex flex-col items-center gap-2">
+                <div className="textbox flex flex-col items-center gap-4">
                   <input
                     {...formik.getFieldProps("firstName")}
-                    className={styles.textbox}
+                    className={styles.lgtextbox}
                     type="text"
                     placeholder="First Name*"
                   />
                   <input
                     {...formik.getFieldProps("lastName")}
-                    className={styles.textbox}
+                    className={styles.lgtextbox}
                     type="text"
                     placeholder="Last Name*"
                   />
                   <input
                     {...formik.getFieldProps("mobile")}
-                    className={styles.textbox}
+                    className={styles.lgtextbox}
                     type="text"
                     placeholder="Phone Number*"
                   />
-                  <input
-                    {...formik.getFieldProps("email")}
-                    className={styles.textbox}
-                    type="text"
-                    placeholder="Email*"
-                  />
 
-                  <input
-                    {...formik.getFieldProps("password")}
-                    className={styles.textbox}
-                    type="password"
-                    placeholder="Password*"
-                  />
                   <button className={styles.btn} type="submit">
-                    Register
+                    Update
                   </button>
                 </div>
               </form>
-              <div className="text-center py-2">
-                <span className="text-gray-500">
-                  Already Register?{" "}
-                  <span
-                    className="text-red-500 cursor-pointer"
-                    onClick={loginHandler}
-                  >
-                    Login Now
-                  </span>
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -164,4 +144,4 @@ const SignupModal = () => {
   ) : null;
 };
 
-export default SignupModal;
+export default ProfileUpdateModal;
