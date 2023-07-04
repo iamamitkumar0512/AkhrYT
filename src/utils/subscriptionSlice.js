@@ -1,4 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { deleteSubscription, postSubscription } from "./subscriptionApiData";
+import { requestAPI } from "./connectionApi";
+
+export const fetchSubscriptionData = createAsyncThunk(
+  "subscription/fetchSubscriptionData",
+  async () => {
+    const response = await requestAPI("get", "/subscription", null, null);
+    return response.data;
+  }
+);
 
 const subscriptionSlice = createSlice({
   name: "subscription",
@@ -8,30 +18,24 @@ const subscriptionSlice = createSlice({
   reducers: {
     addSubscribe: (state, action) => {
       state.subscriptionArray.push(action.payload);
-      localStorage.setItem(
-        "subscribe",
-        JSON.stringify(state.subscriptionArray)
-      );
+      postSubscription(action.payload);
     },
     unSubscribe: (state, action) => {
       let data = JSON.parse(JSON.stringify(state.subscriptionArray));
       let id = action.payload;
+      deleteSubscription(action.payload);
       if (id !== null) {
         data = data.filter((item) => item !== id);
       }
       state.subscriptionArray = data;
-      localStorage.setItem(
-        "subscribe",
-        JSON.stringify(state.subscriptionArray)
-      );
     },
-    updateSubscribeRefresh: (state) => {
-      const dataItems = JSON.parse(localStorage.getItem("subscribe"));
-      state.subscriptionArray = dataItems || [];
+  },
+  extraReducers: {
+    [fetchSubscriptionData.fulfilled]: (state, action) => {
+      state.subscriptionArray = action.payload;
     },
   },
 });
 
-export const { addSubscribe, unSubscribe, updateSubscribeRefresh } =
-  subscriptionSlice.actions;
+export const { addSubscribe, unSubscribe } = subscriptionSlice.actions;
 export default subscriptionSlice.reducer;

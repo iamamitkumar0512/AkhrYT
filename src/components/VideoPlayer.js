@@ -27,6 +27,8 @@ const VideoPlayer = () => {
   const [videoData, setVideoData] = useState([]);
   const dispatch = useDispatch();
 
+  const userState = useSelector((store) => store.loginData.isLoggedIn);
+
   const subscribeArray = useSelector(
     (store) => store.subscription.subscriptionArray
   );
@@ -57,7 +59,7 @@ const VideoPlayer = () => {
   }
 
   const checkLikeVideo = function (id, likeArray) {
-    for (let i = 0; i < likeArray.length; i++) {
+    for (let i = 0; i < likeArray?.length; i++) {
       if (likeArray[i].id === id) {
         return true;
       }
@@ -91,42 +93,56 @@ const VideoPlayer = () => {
         <br></br>
         <div className="flex flex-row justify-between">
           <h2 className="font-bold">{state?.snippet?.channelTitle}</h2>
-          <div className="flex">
-            {subscribeArray.includes(state?.snippet?.channelId) ? (
-              <button
-                className="mr-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
-                onClick={() => dispatch(unSubscribe(state?.snippet?.channelId))}
-              >
-                Subscribed
-              </button>
-            ) : (
-              <button
-                className="mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full"
-                onClick={() =>
-                  dispatch(addSubscribe(state?.snippet?.channelId))
-                }
-              >
-                Subscribe
-              </button>
-            )}
-            {checkLikeVideo(state?.id, likeArray) ? (
-              <button
-                className="flex bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
-                onClick={() => dispatch(dislike(state))}
-              >
-                <HandThumbUpIcon className="h-6 w-6" />
-                <p className="px-1">{increaseLikebyone}</p>
-              </button>
-            ) : (
-              <button
-                className=" flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full"
-                onClick={() => dispatch(liked(state))}
-              >
-                <HandThumbUpIcon className="h-6 w-6" />
-                <p className="px-1">{likeCount}</p>
-              </button>
-            )}
-          </div>
+          {userState ? (
+            <div className="flex">
+              {subscribeArray.includes(state?.snippet?.channelId) ? (
+                <button
+                  className="mr-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
+                  onClick={() =>
+                    dispatch(unSubscribe(state?.snippet?.channelId))
+                  }
+                >
+                  Subscribed
+                </button>
+              ) : (
+                <button
+                  className="mr-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full"
+                  onClick={() =>
+                    dispatch(addSubscribe(state?.snippet?.channelId))
+                  }
+                >
+                  Subscribe
+                </button>
+              )}
+              {checkLikeVideo(state?.id, likeArray) ? (
+                <button
+                  className="flex bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded-full"
+                  onClick={() => dispatch(dislike(state))}
+                >
+                  <HandThumbUpIcon className="h-6 w-6" />
+                  <p className="px-1">{increaseLikebyone}</p>
+                </button>
+              ) : (
+                <button
+                  className=" flex bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full"
+                  onClick={() => dispatch(liked(state))}
+                >
+                  <HandThumbUpIcon className="h-6 w-6" />
+                  <p className="px-1">{likeCount}</p>
+                </button>
+              )}
+            </div>
+          ) : (
+            <button
+              className=" flex bg-blue-500 text-white font-bold py-1 px-2 rounded-full"
+              disabled={true}
+            >
+              <HandThumbUpIcon className="h-6 w-6" disabled={true} />
+              <p className="px-1" disabled={true}>
+                {likeCount}
+              </p>
+            </button>
+          )}
         </div>
         <div className="max-w-xl rounded-lg bg-gray-800 p-2 mt-3">
           <p>
@@ -154,7 +170,7 @@ const VideoPlayer = () => {
         <div className="max-w-xl bg-gray-200 rounded">
           <div className="flex flex-row justify-between p-2  mt-3">
             <h2 className="font-bold py-2 px-4">
-              {commentData.length} Comments
+              {commentData?.length} Comments
             </h2>
             {show ? (
               <button
